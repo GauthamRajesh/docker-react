@@ -1,0 +1,23 @@
+version: '3'
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "3000:3000"
+    # Sets up references between container and the local machine
+    volumes:
+      # No colon -> ignore this folder in the container
+      - /app/node_modules
+      # Map everything in the current folder to the container's /app folder (without node_modules)
+      - .:/app
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    volumes:
+      - /app/node_modules
+      - .:/app
+    command: ["npm", "run", "test"]
+    
